@@ -253,13 +253,11 @@
     <p class="loading-line">Type words that appear above your cursor.</p>
     <p class="loading-line">Press Enter to release them into the universe.</p>
     <p class="loading-line">Scroll to zoom, drag to pan.</p>
-    <p class="loading-line">Connect with your thoughts.</p>
-    <p class="loading-line">A project that brings out the essence of physcology with coding.</p>
-    <p class="loading-line">Simply write aimlessly about yor day and you will see patterns forming which will lead you to supressed memories.</p>
-    <p class="loading-line">Increases focus and mental fortitude.</p>
-    <p class="loading-line">Made by Ahmad Hussain</p>
+    <p class="loading-line">Patterns form to bring out your supressed memories</p>
+    <p class="loading-line">Made By Ahmad Hussain.</p>
+    <input type="text" id="username-input" placeholder="Enter Anonymously" maxlength="20">
   </div>
-
+  
   <div id="main-space">
     <div id="navbar"><h1>Ghost Diary</h1></div>
     <div id="universe"></div>
@@ -669,5 +667,52 @@
 
   }); // DOMContentLoaded
   </script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  let username = '';
+  const input = document.getElementById('username-input');
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && input.value.trim() !== '') {
+      username = input.value.trim();
+      socket.emit('setUsername', username);
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('main-space').style.display = 'block';
+    }
+  });
+
+  // Send cursor position
+  document.addEventListener('mousemove', (e) => {
+    socket.emit('cursorMove', { x: e.clientX, y: e.clientY });
+  });
+
+  // Send new word
+  function releaseWord(word, x, y) {
+    socket.emit('newWord', { word, x, y, username });
+  }
+
+  // Receive other users’ cursors
+  socket.on('remoteCursor', ({ id, x, y, username }) => {
+    // Handle creating/updating remote cursors (you can create a DOM element for each ID)
+  });
+
+  // Receive new word release
+  socket.on('spawnWord', ({ word, x, y, username }) => {
+    // Spawn that word visually at (x,y) and associate it with the username
+  });
+
+  // Handle user join/leave (optional: animations or system messages)
+  socket.on('userJoined', ({ id, username }) => {
+    // Add to player list / show visual join
+  });
+
+  socket.on('userLeft', (id) => {
+    // Remove user cursor / cleanup visuals
+  });
+</script>
+
 </body>
 </html>
