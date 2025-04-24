@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghost Diary</title>
+  <style>
+    /* Combined CSS: style.css + characters.css */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      user-select: none;
+      cursor: crosshair;
+    }
+
+    body {
+      overflow: hidden;
+      transform-origin: center center;
+    }
+
+    #loading-screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.1rem;
+      line-height: 2rem;
+      text-align: center;
+      animation: fadeOut 3s ease forwards;
+      animation-delay: 5s;
+      z-index: 10;
+    }
+
+    .loading-line {
+      opacity: 0;
+      animation: appear 0.6s forwards;
+    }
+
+    .loading-line:nth-child(1) { animation-delay: 0s; }
+    .loading-line:nth-child(2) { animation-delay: 1s; }
+    .loading-line:nth-child(3) { animation-delay: 2s; }
+    .loading-line:nth-child(4) { animation-delay: 3s; }
+    .loading-line:nth-child(5) { animation-delay: 4s; }
+
+    #main-space {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #title {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 1.5rem;
+      color: white;
+      z-index: 1;
+    }
+
+    #universe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      transform-origin: center center;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .character {
+      position: absolute;
+      color: white;
+      font-family: monospace;
+      pointer-events: none;
+      transition: transform 0.8s ease, font-size 1.5s ease, opacity 2s ease;
+      user-select: none;
+      white-space: pre;
+    }
+
+    .stardust {
+      animation: float 4s ease-in-out infinite, flicker 1.2s infinite;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 10px !important;
+      opacity: 0.6 !important;
+      filter: blur(0.6px);
+      text-shadow: 0 0 2px rgba(255,255,255,0.3), 0 0 4px rgba(255,255,255,0.2);
+    }
+
+    .blackhole {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, white 0%, black 60%);
+      border-radius: 50%;
+      box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1);
+      animation: swirl 2s infinite linear;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.6; }
+      50% { opacity: 0.9; }
+      100% { opacity: 0.6; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes swirl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes appear {
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-screen">
+    <p class="loading-line">Ghost Diary is an infinite page of drifting thoughts.</p>
+    <p class="loading-line">Type anything. You won’t see it appear directly.</p>
+    <p class="loading-line">Each character becomes cosmic dust—</p>
+    <p class="loading-line">Stars, voids, black holes born from your thoughts.</p>
+    <p class="loading-line">Keep typing. Scroll. Zoom. Drift with it.</p>
+  </div>
+
+  <div id="main-space" style="display:none;">
+    <h1 id="title">Ghost Diary</h1>
+    <div id="universe"></div>
+  </div>
+
+  <script>
+    // Combined JS: noise.js + animations.js + script.js
+    
+    // ======= noise.js =======
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    function generateNoise() {
+      const duration = 0.2 + Math.random() * 0.3;
+      const sampleRate = audioCtx.sampleRate;
+      const bufferSize = sampleRate * duration;
+      const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = buffer;
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.value = 0.1 + Math.random() * 0.1;
+      noiseSource.playbackRate.value = 0.8 + Math.random() * 0.6;
+      noiseSource.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      noiseSource.start();
+      noiseSource.stop(audioCtx.currentTime + duration);
+    }
+
+    // ======= animations.js =======
+    function assignCosmicTransformation(el) {
+      const types = ["stardust", "blackhole", "twinkle", "flare"];
+      const chosen = types[Math.floor(Math.random() * types.length)];
+
+      if (chosen === "blackhole") {
+        const blackhole = document.createElement("div");
+        blackhole.classList.add("blackhole");
+        blackhole.style.left = el.style.left;
+        blackhole.style.top = el.style.top;
+        universe.appendChild(blackhole);
+        el.remove();
+        setTimeout(() => blackhole.remove(), 7000);
+      } else {
+        el.classList.add(chosen);
+        setTimeout(() => el.remove(), 15000 + Math.random() * 5000);
+      }
+    }
+
+    // ======= script.js =======
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("loading-screen").style.display = "none";
+        document.getElementById("main-space").style.display = "block";
+      }, 5500);
+    });
+
+    const universe = document.getElementById("universe");
+    let cursorX = window.innerWidth / 2;
+    let cursorY = window.innerHeight / 2;
+    document.addEventListener("mousemove", (e) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+    });
+
+    const cosmicParticles = [];
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        createCharacter(e.key);
+        generateNoise();
+      }
+    });
+
+    function createCharacter(char) {
+      const el = document.createElement("span");
+      el.classList.add("character");
+      el.textContent = char;
+      el.style.left = `${cursorX}px`;
+      el.style.top = `${cursorY}px`;
+      el.style.fontSize = `26px`;
+      universe.appendChild(el);
+
+      const driftX = (Math.random() - 0.5) * 100;
+      const driftY = (Math.random() - 0.5) * 100;
+
+      setTimeout(() => {
+        el.style.transform = `translate(${driftX}px, ${driftY}px)`;
+        el.style.fontSize = "12px";
+        el.style.opacity = "0.9";
+      }, 10);
+
+      setTimeout(() => assignCosmicTransformation(el), 3000 + Math.random() * 4000);
+    }
+  </script>
+</body>
+</html>
