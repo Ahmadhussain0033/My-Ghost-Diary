@@ -78,4 +78,3 @@ It’s also an experiment in **conceptual art** — **how technology and randomn
 ### **Final Note**:  
 The **Ghost Diary** is about the journey, not the destination. It’s a digital space where thoughts turn into **patterns**, **glyphs**, and **noise**. It's an abstract meditation on the **infinite mind**, where **words** evolve into **constellations** and **dream-like patterns**. By writing, the user participates in creating this ever-expanding dream universe, all while discovering something about their own mind — whether consciously or subconsciously.
 
-Would you like to start prototyping this? I can help with mockups or basic coding structures for the **drifting text effect**! Let me know how you’d like to proceed.
