@@ -1,4 +1,4 @@
-### **Ghost Diary - Full Summary**
+## **Ghost Diary - Full Summary**
 
 **Ghost Diary** is a **conceptual digital experience** designed to explore the intersection of thought, randomness, and pattern recognition, creating a dream-like space for the user to engage with their subconscious. The idea is to encourage **free-form writing** where **patterns, noise, and randomness** take over, creating an **ever-evolving** and **infinite** universe of glyphs, letters, and sounds. The user writes freely, with the system responding in abstract ways, forming patterns and illusions of meaning without any direct feedback, all while leaving the user to interpret their own experience.
 
@@ -77,4 +77,9 @@ It’s also an experiment in **conceptual art** — **how technology and randomn
 
 ### **Final Note**:  
 The **Ghost Diary** is about the journey, not the destination. It’s a digital space where thoughts turn into **patterns**, **glyphs**, and **noise**. It's an abstract meditation on the **infinite mind**, where **words** evolve into **constellations** and **dream-like patterns**. By writing, the user participates in creating this ever-expanding dream universe, all while discovering something about their own mind — whether consciously or subconsciously.
+
+---
+ ### **Visual Link**
+
+ https://ahmadhussain0033.github.io/My-Ghost-Diary/
 
